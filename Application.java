@@ -5,7 +5,7 @@ public class Application {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\nEnter operation (add, subtract, multiply, divide, pow, sqrt, log, log10, sin, cos, tan, factorial) or 'exit' to quit:");
+            System.out.println("\nEnter operation (add, subtract, multiply, divide, pow, sqrt, log, log10, sin, cos, tan, factorial, permute) or 'exit' to quit:");
             String operation = scanner.next();
             if (operation.equalsIgnoreCase("exit")) {
                 System.out.println("Exiting calculator...");
@@ -15,7 +15,7 @@ public class Application {
             // For operations requiring two inputs
             if (!operation.equalsIgnoreCase("sqrt") && !operation.equalsIgnoreCase("log") && !operation.equalsIgnoreCase("log10") &&
                 !operation.equalsIgnoreCase("sin") && !operation.equalsIgnoreCase("cos") && !operation.equalsIgnoreCase("tan") &&
-                !operation.equalsIgnoreCase("factorial")) {
+                !operation.equalsIgnoreCase("factorial") && !operation.equalsIgnoreCase("permute")) {
                 System.out.print("Enter first number: ");
                 double num1 = scanner.nextDouble();
                 System.out.print("Enter second number: ");
@@ -45,6 +45,12 @@ public class Application {
                         System.out.println("Invalid operation.");
                         break;
                 }
+            } else if (operation.equalsIgnoreCase("permute")) {
+                System.out.print("Enter the total number of elements (n): ");
+                int n = scanner.nextInt();
+                System.out.print("Enter the number of items to be selected (r): ");
+                int r = scanner.nextInt();
+                System.out.println("Result: " + permutationRecursive(n, r));
             } else {
                 System.out.print("Enter number: ");
                 double num = scanner.nextDouble();
@@ -142,6 +148,23 @@ public class Application {
         System.out.print("\rCalculating factorial: " + progress + "%");
         return num * factorialHelper(originalNum, num - 1);
     }
-}
+    public static long permutationRecursive(int n, int r) {
+        if (n < 0 || r < 0) {
+            System.out.println("Error: The number of elements or selected items is out of valid range.");
+            return -1;
+        }
+        if (r > n) {
+            System.out.println("Error: The number of selected items cannot be greater than the total number of elements.");
+            return -1;
+        }
+        return permutationHelper(n, r);
+    }
 
+    private static long permutationHelper(int n, int r) {
+        if (r == 0) {
+            return 1;
+        }
+        return n * permutationHelper(n - 1, r - 1);
+    }
+}
 
